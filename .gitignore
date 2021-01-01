@@ -1,0 +1,4 @@
+# 프로젝트 제외 경로
+/backend/node_modules/
+/front/.next/
+/front/node_modules/

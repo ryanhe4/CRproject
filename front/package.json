@@ -1,0 +1,20 @@
+{
+  "name": "CR-Front",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@ant-design/icons": "^4.3.0",
+    "@reduxjs/toolkit": "^1.5.0",
+    "antd": "^4.9.4",
+    "next": "^10.0.4",
+    "next-redux-wrapper": "^7.0.0-rc.1",
+    "prop-types": "^15.7.2",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2"
+  },
+  "scripts": {
+    "dev": "next"
+  }
+}
