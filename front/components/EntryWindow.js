@@ -1,7 +1,7 @@
 import {Divider, Input} from "antd";
 import {useInput} from "../lib/hooks/useInput";
-import {useCallback} from "react";
-import {useDispatch} from "react-redux";
+import {useCallback, useEffect} from "react";
+import {useDispatch, useSelector} from "react-redux";
 import {addUrl} from "../lib/actions/url";
 import {addEmail} from "../lib/actions/email";
 
@@ -13,15 +13,23 @@ const EntryWindow = ({type}) => {
     const [email, onChangeEmail, setEmail] = useInput('');
     const [url, onChangeUrl, setUrl] = useInput('');
 
+    const {isErrorUrl, selectId} = useSelector((state) => state.url);
+
+    useEffect(() => {
+        if (isErrorUrl) {
+            alert(isErrorUrl);
+        }
+    }, [isErrorUrl]);
+
     const onAddUrl = useCallback(() => {
         dispatch(addUrl(url));
         setUrl('');
     }, [url, setUrl]);
 
     const onAddEmail = useCallback(() => {
-        dispatch(addEmail(email));
+        dispatch(addEmail({email, urlId: selectId}));
         setEmail('');
-    }, [email, setEmail]);
+    }, [email, setEmail, selectId]);
     return (
         <div>
             <Divider orientation="left">추가</Divider>

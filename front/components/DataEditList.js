@@ -1,7 +1,7 @@
 import {Button, Divider, List,} from "antd";
 import EditModal from "./EditModal";
 import {useState, useCallback} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {removeEmail} from "../lib/actions/email";
 import {removeUrl} from "../lib/actions/url";
 
@@ -9,19 +9,24 @@ const DataEditList = ({data, type}) => {
     const dispatch = useDispatch();
 
     const [visible, setVisible] = useState(false);
+
     const onEditClick = useCallback(() => {
         setVisible(true);
     }, [setVisible]);
 
+    const {selectId} = useSelector((state) => state.url);
     const onRemoveClick = useCallback((item) => () => {
         if (item.email) {
             //TODO remove email action dispatch
-            dispatch(removeEmail(item.id));
+            dispatch(removeEmail({
+                emailId: item.id,
+                urlId:selectId
+            }));
         } else {
             //TODO remove url action dispatch
             dispatch(removeUrl(item.id));
         }
-    }, []);
+    }, [selectId]);
 
     return (
         <>

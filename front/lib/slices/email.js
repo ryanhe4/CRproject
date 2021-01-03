@@ -21,9 +21,10 @@ export const emailSlice = createSlice({
             .addCase(loadEmail.pending, (state,action) => {
                 state.urlId = null;
                 state.isLoadingEmail = true;
+                state.isErrorEmail= null;
             })
             .addCase(loadEmail.fulfilled, (state,action) => {
-                state.emails = action.payload.emails;
+                state.emails = action.payload.data;
                 state.isLoadingEmail = false;
             })
             .addCase(loadEmail.rejected, (state,action) => {
@@ -32,10 +33,11 @@ export const emailSlice = createSlice({
             })
             .addCase(addEmail.pending, (state,action) => {
                 state.isLoadingAdd = true;
+                state.isErrorAdd= null;
             })
             .addCase(addEmail.fulfilled, (state,action) => {
                 state.isLoadingAdd = false;
-                state.emails.unshift(action.payload);
+                state.emails.unshift(action.payload.data);
             })
             .addCase(addEmail.rejected, (state,action) => {
                 state.isErrorEmail = action.error.message;
@@ -43,10 +45,11 @@ export const emailSlice = createSlice({
             })
             .addCase(removeEmail.pending, (state,action) => {
                 state.isLoadingRemove = true;
+                state.isErrorRemove= null;
             })
             .addCase(removeEmail.fulfilled, (state,action) => {
                 state.isLoadingRemove = false;
-                state.emails = state.emails.filter((v) => v.id !== action.payload);
+                state.emails = state.emails.filter((v) => v.id !== action.payload.data.emailId);
             })
             .addCase(removeEmail.rejected, (state,action) => {
                 state.isErrorEmail = action.error.message;
