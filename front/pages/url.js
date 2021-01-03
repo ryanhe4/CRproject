@@ -3,15 +3,19 @@ import DataEditList from "../components/DataEditList";
 import EntryWindow from "../components/EntryWindow";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {loadUrl} from "../lib/actions/url";
+import Router from "next/router";
 
 const UrlPage = () => {
+    const dispatch = useDispatch();
     const {mainUrls: data} = useSelector((state) => state.url);
 
-    const dispatch = useDispatch();
+    const {selectId} = useSelector((state) => state.url);
+
     useEffect(() => {
-        dispatch(loadUrl());
-    }, []);
+        if (!(selectId)) {
+            Router.push('/');
+        }
+    }, [selectId]);
 
     return (
         <AppLayout>

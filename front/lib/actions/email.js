@@ -1,38 +1,28 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-
-const delay = (time, value) => new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve(value);
-    }, time);
-});
+import axios from "axios";
 
 export const loadEmail = createAsyncThunk('email/loadEmails',
     async (data, thunkAPI) => {
-        return await delay(500, {
-            emails: [
-                {id: 1, email: 'ryanhe4@gmail.com'},
-                {id: 2, email: 'ryanhe4@naver.com'},
-                {id: 3, email: 'ryanhe4@nsu.ac.kr'},
-            ]
-        });
+        const emails = await axios.get('http://localhost:4000/api/email/' + data);
+        return emails;
     })
 
 export const addEmail = createAsyncThunk('email/addEmail',
     async (data, thunkAPI) => {
-        const email = {
-            id: Math.ceil(Math.random() * 45),
-            email: data
-        }
-
         const validateEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-        if (!validateEmail.test(data)) {
+        if (!validateEmail.test(data.email)) {
             throw Error('올바른 형식의 이메일이 아닙니다.');
         }
-        return await delay(500, email);
+        return await axios.post('http://localhost:4000/api/email', data);
     })
+/**
+ * @param emailId 삭제할 이메일 ID
+ * @return emailId 삭제된 이메일 ID
+ */
 
 export const removeEmail = createAsyncThunk('email/removeEmail',
     async (data, thunkAPI) => {
-        return await delay(500, data);
+        //email 삭제 요청
+        return await axios.patch('http://localhost:4000/api/email/', data);
     });
 

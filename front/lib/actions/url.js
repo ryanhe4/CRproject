@@ -1,4 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import axios from "axios";
 
 const delay = (time, value) => new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -7,17 +8,12 @@ const delay = (time, value) => new Promise((resolve, reject) => {
 });
 
 /**
- * @param {null} data requset 데이터 load시에는 null
- * @return {emails: Array}
+ * @param {null} data 필요없음 null
+ * @return urls payload.data Array
  */
 export const loadUrl = createAsyncThunk('url/loadUrls', async (data, thunkAPI) => {
-    return await delay(500, {
-        urls: [
-            {id: 1, url: 'https://xploitdev.com'},
-            {id: 2, url: 'http://naver.com'},
-            {id: 3, url: 'http://daum.net'},
-        ]
-    });
+    const res = await axios.get('http://localhost:4000/api/url');
+    return res;
 });
 
 export const loadLogs = createAsyncThunk('url/loadLogs', async (data, thunkAPI) => {
@@ -31,16 +27,19 @@ export const loadLogs = createAsyncThunk('url/loadLogs', async (data, thunkAPI) 
 });
 
 export const addUrl = createAsyncThunk('url/addUrl', async (data, thunkAPI) => {
-    const url = {
-        id: Math.ceil(Math.random() * 45),
-        url: data
+    const validate = /^([\w-]+(=[\w-]*)?(&[\w-]+(=[\w-]*)?)*)?$/g
+    if (!validate.test(data)) {
+        throw Error('올바른 주소형식이 아닙니다.');
     }
-    return await delay(500, url);
+    try {
+        return await axios.post('http://localhost:4000/api/url', {url: data});
+    } catch (e) {
+        return thunkAPI.rejectWithValue(e.response.data)
+    }
 });
 
 export const removeUrl = createAsyncThunk('url/removeUrl',
     async (data, thunkAPI) => {
-
-    return await delay(500, data);
-});
+        return await axios.delete('http://localhost:4000/api/url/' + data);
+    });
 

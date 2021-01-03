@@ -4,16 +4,22 @@ import EntryWindow from "../components/EntryWindow";
 import {useDispatch, useSelector} from "react-redux";
 import {loadEmail} from "../lib/actions/email";
 import {useEffect} from "react";
-import {loadUrl} from "../lib/actions/url";
+import Router from 'next/router';
 
 const EmailPage = () => {
     const dispatch = useDispatch();
     const {emails} = useSelector((state) => state.email);
+    const {selectId} = useSelector((state) => state.url);
 
-    useEffect(()=> {
-        dispatch(loadUrl());
-        dispatch(loadEmail());
-    },[]);
+    useEffect(() => {
+        if (!(selectId)) {
+            Router.push('/');
+        }
+    }, [selectId]);
+
+    useEffect(() => {
+        dispatch(loadEmail(selectId));
+    }, [selectId]);
 
     return (
         <AppLayout>
